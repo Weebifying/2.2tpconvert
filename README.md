@@ -8,6 +8,7 @@ I just made this script like 2 days ago lol, haven't tested the results ingame e
 $ pip install -r requirements.txt
 $ python main.py $PACK_PATH
 ```
+The output will be put in `$PACK_PATH`
 
 # Todo list:
 - Support for all textures

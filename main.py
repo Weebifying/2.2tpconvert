@@ -2,14 +2,21 @@ import re
 import plistlib
 import os, sys
 import traceback
+import time
 from PIL import Image
 from os.path import join, isfile, isdir, splitext, abspath
 
 
 def convert(dir, files, suffix):
+    start_time = time.time()
     try:
         try:
-            os.mkdir(join(dir, "icons"))
+            os.mkdir(join(dir, "output"))
+        except:
+            pass
+
+        try:
+            os.mkdir(join(dir, "output", "icons"))
         except:
             pass
 
@@ -103,17 +110,17 @@ def convert(dir, files, suffix):
                 }
             }
 
-            f = open(join(dir, "icons", f"{splitext(icon)[0]}{suffix}.plist"), 'wb')
+            f = open(join(dir, "output", "icons", f"{splitext(icon)[0]}{suffix}.plist"), 'wb')
             plistlib.dump(plist_data, f)
-            sheet.save(join(dir, "icons", f"{splitext(icon)[0]}{suffix}.png"))
+            sheet.save(join(dir, "output", "icons", f"{splitext(icon)[0]}{suffix}.png"))
         
-        print("Done!")
+        print(f"Done! ({round(time.time() - start_time, 4)} seconds)")
     except Exception as e:
         print(f"An error occurred while converting {files}:")
         print(traceback.format_exc)
 
 
-pack = input("Enter your 2.1 pack path: ")
+pack = abspath(input("Enter your 2.1 pack path: "))
 
 try:
     files = [f for f in os.listdir(pack) if isfile(join(pack, f))]
@@ -144,3 +151,6 @@ if len(files_medium) == 4:
 if len(files_high) == 4:
     print(f'Ready to convert {files_high} to 2.2.')
     convert(pack, files_high, "-uhd")
+
+print(f"Converted textures are saved in {join(pack, 'output')}!")
+input("Press Enter to close the window.")

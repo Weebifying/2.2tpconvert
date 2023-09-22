@@ -93,10 +93,10 @@ def convert(dir, files, suffix):
                     "format": 3,
                     "pixelFormat": "RGBA4444",
                     "premultiplyAlpha": False,
-                    "realTextureFileName": "icons/" + splitext(icon)[0] + suffix + splitext(icon)[1],
+                    "realTextureFileName": "icons/" + splitext(icon)[0] + suffix + ".png",
                     "size": "{" + str(w) + "," + str(h) + "}",
                     "smartupdate": "",
-                    "textureFileName": "icons/" + splitext(icon)[0] + suffix + splitext(icon)[1]
+                    "textureFileName": "icons/" + splitext(icon)[0] + suffix + ".png"
                 }
             }
 

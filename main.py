@@ -117,7 +117,8 @@ def convert(dir, files, suffix):
         print(f"Done! ({round(time.time() - start_time, 4)} seconds)")
     except Exception as e:
         print(f"An error occurred while converting {files}:")
-        print(traceback.format_exc)
+        print(key)
+        print(traceback.format_exc())
 
 
 pack = abspath(input("Enter your 2.1 pack path: "))

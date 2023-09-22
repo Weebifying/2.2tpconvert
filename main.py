@@ -14,12 +14,6 @@ def convert(dir, files, suffix):
         except:
             pass
 
-        try:
-            os.mkdir(join(dir, ".temp"))
-        except:
-            pass
-
-
         with open(join(dir, f"GJ_GameSheet02{suffix}.plist"), 'rb') as f:
             gs02_data = plistlib.load(f) 
             gs02_frames = list(gs02_data.get('frames').items())
@@ -52,10 +46,13 @@ def convert(dir, files, suffix):
                 else:
                     sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]].append(key)
 
+
         for icon in sprites_dict:
             w = 0
             h = 0
             x = 0
+            icon_frames = {}
+            
             for key in sprites_dict[icon]:
                 w += int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[0])) if not key[1]["textureRotated"] else int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[1]))
                 if h < int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[1])) and not key[1]["textureRotated"]:
@@ -85,10 +82,10 @@ def convert(dir, files, suffix):
                 key[1]["textureRect"] = "{{" + str(x) + "," + "0" + "},{" + str(sprite.width) + "," + str(sprite.height) + "}}"
 
                 x += right - left
-                key = {key[0]: key[1]}
+                icon_frames[key[0]] = key[1]
                 
             plist_data = {
-                "frames": sprites_dict[icon], 
+                "frames": icon_frames, 
                 "metadata": {
                     "format": 3,
                     "pixelFormat": "RGBA4444",

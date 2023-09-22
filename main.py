@@ -82,8 +82,6 @@ def convert(dir, files, suffix):
 
                 sheet.paste(sprite, (x, 0))
 
-                key[1]["spriteSize"] = "{" + str(sprite.width) + "," + str(sprite.height) + "}"
-                key[1]["spriteSourceSize"] = "{" + str(sprite.width + 2*int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteOffset"]).group(1).split(',')[0]))) + "," + str(sprite.height + 2*int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteOffset"]).group(1).split(',')[1]))) + "}"
                 key[1]["textureRect"] = "{{" + str(x) + "," + "0" + "},{" + str(sprite.width) + "," + str(sprite.height) + "}}"
 
                 x += right - left

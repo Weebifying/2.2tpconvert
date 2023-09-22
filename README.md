@@ -8,7 +8,7 @@ I just made this script like 2 days ago lol, haven't tested the results ingame e
 $ pip install -r requirements.txt
 $ python main.py
 ```
-You need to have both Gamesheet02 and GamesheetGlow pngs and plists in your input folder
+You need to have both GameSheet02 and GameSheetGlow pngs and plists in your input folder
 
 
 # Todo list:

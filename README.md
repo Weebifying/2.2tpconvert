@@ -11,4 +11,3 @@ $ python main.py $PACK_PATH
 
 # Todo list:
 - Support for all textures
-- GUI (unlikely)

@@ -1,7 +1,6 @@
 import re
 import plistlib
 import os, sys
-import argparse
 import traceback
 from PIL import Image
 from os.path import join, isfile, isdir, splitext, abspath
@@ -44,7 +43,14 @@ def convert(dir, files, suffix):
                 if key[0].startswith('player_ball_'):
                     sprites_dict["player_ball_" + key[0].split("_")[2]].append(key)
                 else:
-                    sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]].append(key)
+                    # robtop made it so that some robots' glows can be found in both gamesheet02 and gamesheetglow for whatever reason
+                    # so this is a thing to eliminate the extra glows
+                    test = True
+                    for testkey in sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]]:
+                        if key[0] == testkey[0]:
+                            test = False
+                    if test:
+                        sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]].append(key)
 
 
         for icon in sprites_dict:
@@ -107,14 +113,10 @@ def convert(dir, files, suffix):
         print(traceback.format_exc)
 
 
-parser = argparse.ArgumentParser(description='Convert 2.1 icons texture packs to 2.2')
-parser.add_argument('pack', type=str)
-args = parser.parse_args()
-
-args.pack = abspath(args.pack)
+pack = input("Enter your 2.1 pack path: ")
 
 try:
-    files = [f for f in os.listdir(args.pack) if isfile(join(args.pack, f))]
+    files = [f for f in os.listdir(pack) if isfile(join(pack, f))]
 except FileNotFoundError:
     print("Wrong/Invalid pack path!")
     sys.exit(1)
@@ -133,12 +135,12 @@ for f in files:
 
 if len(files_low) == 4:
     print(f'Ready to convert {files_low} to 2.2.')
-    convert(args.pack, files_low, "")
+    convert(pack, files_low, "")
 
 if len(files_medium) == 4:
     print(f'Ready to convert {files_medium} to 2.2.')
-    convert(args.pack, files_medium, "-hd")
+    convert(pack, files_medium, "-hd")
 
 if len(files_high) == 4:
     print(f'Ready to convert {files_high} to 2.2.')
-    convert(args.pack, files_high, "-uhd")
+    convert(pack, files_high, "-uhd")

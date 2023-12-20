@@ -3,7 +3,7 @@ Convert 2.1 texture packs to 2.2
 
 For now only icons texture packs are supported!!!
 
-IT WORKS INGAME!!!
+~~IT WORKS INGAME!!!~~ it does NOT work properly at least for me but u can try
 
 # Usage
 ```sh

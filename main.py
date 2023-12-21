@@ -94,7 +94,7 @@ def convert(dir, files, suffix):
 
                 key[1]["textureRect"] = "{{" + str(x) + "," + "0" + "},{" + str(sprite.width) + "," + str(sprite.height) + "}}"
 
-                x += right - left
+                x += right - left + 1
                 icon_frames[key[0]] = key[1]
                 
             plist_data = {
@@ -154,4 +154,5 @@ if len(files_high) == 4:
     convert(pack, files_high, "-uhd")
 
 print(f"Converted textures are saved in {join(pack, 'output')}!")
-input("Press Enter to close the window.")
+if getattr(sys, "   frozen", False):
+    input("Press Enter to close the window.")

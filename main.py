@@ -68,6 +68,7 @@ def convert(dir, files, suffix):
             
             for key in sprites_dict[icon]:
                 w += int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[0])) if not key[1]["textureRotated"] else int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[1]))
+                w += 1 
                 if h < int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[1])) and not key[1]["textureRotated"]:
                     h = int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[1]))
                 elif h < int(float(re.search("(?<={)(.*)(?=})", key[1]["spriteSize"]).group(1).split(',')[0])) and key[1]["textureRotated"]:
@@ -118,41 +119,45 @@ def convert(dir, files, suffix):
     except Exception as e:
         print(f"An error occurred while converting {files}:")
         print(key)
+        print(traceback.format_exc())   
+
+
+def main():
+    try:
+        pack = abspath(input("Enter your 2.1 pack path: "))
+        files_list = [f for f in os.listdir(pack) if isfile(join(pack, f))]
+    except:
+        print("Wrong/Invalid pack path!")
         print(traceback.format_exc())
+        print()
+        main()
 
+    files_low = []
+    files_medium = []
+    files_high = []
 
-pack = abspath(input("Enter your 2.1 pack path: "))
+    for f in files_list:
+        if splitext(f)[0] in ['GJ_GameSheet02', 'GJ_GameSheetGlow'] and splitext(f)[1] in ['.plist', '.png']:
+            files_low.append(f) 
+        elif splitext(f)[0] in ['GJ_GameSheet02-hd', 'GJ_GameSheetGlow-hd'] and splitext(f)[1] in ['.plist', '.png']:
+            files_medium.append(f)
+        elif splitext(f)[0] in ['GJ_GameSheet02-uhd', 'GJ_GameSheetGlow-uhd'] and splitext(f)[1] in ['.plist', '.png']:
+            files_high.append(f)
 
-try:
-    files = [f for f in os.listdir(pack) if isfile(join(pack, f))]
-except FileNotFoundError:
-    print("Wrong/Invalid pack path!")
-    sys.exit(1)
+    if len(files_low) == 4:
+        print(f'Ready to convert {files_low} to 2.2.')
+        convert(pack, files_low, "")
 
-files_low = []
-files_medium = []
-files_high = []
+    if len(files_medium) == 4:
+        print(f'Ready to convert {files_medium} to 2.2.')
+        convert(pack, files_medium, "-hd")
 
-for f in files:
-    if splitext(f)[0] in ['GJ_GameSheet02', 'GJ_GameSheetGlow'] and splitext(f)[1] in ['.plist', '.png']:
-        files_low.append(f) 
-    elif splitext(f)[0] in ['GJ_GameSheet02-hd', 'GJ_GameSheetGlow-hd'] and splitext(f)[1] in ['.plist', '.png']:
-        files_medium.append(f)
-    elif splitext(f)[0] in ['GJ_GameSheet02-uhd', 'GJ_GameSheetGlow-uhd'] and splitext(f)[1] in ['.plist', '.png']:
-        files_high.append(f)
+    if len(files_high) == 4:
+        print(f'Ready to convert {files_high} to 2.2.')
+        convert(pack, files_high, "-uhd")
 
-if len(files_low) == 4:
-    print(f'Ready to convert {files_low} to 2.2.')
-    convert(pack, files_low, "")
-
-if len(files_medium) == 4:
-    print(f'Ready to convert {files_medium} to 2.2.')
-    convert(pack, files_medium, "-hd")
-
-if len(files_high) == 4:
-    print(f'Ready to convert {files_high} to 2.2.')
-    convert(pack, files_high, "-uhd")
-
-print(f"Converted textures are saved in {join(pack, 'output')}!")
-if getattr(sys, "   frozen", False):
+    print(f"Converted textures are saved in {join(pack, 'output')}!")
     input("Press Enter to close the window.")
+
+
+main()

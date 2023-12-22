@@ -35,7 +35,7 @@ def convert(dir, files, suffix):
         sprites_list = []
 
         for key in gs02_frames:
-            if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')):
+            if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')) or key[0] == "fireBoost_001.png":
                 # Check if the sprite is of an icon to add in sprites_list
                 if key[0].startswith('player_ball_'):
                     sprites_list.append(["player_ball_" + key[0].split("_")[2], []])
@@ -51,9 +51,11 @@ def convert(dir, files, suffix):
 
         # God I have no idea what's happening here
         for key in gs02_frames + gsgl_frames:
-            if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')):
+            if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')) or key[0] == "fireBoost_001.png":
                 if key[0].startswith('player_ball_'):
                     sprites_dict["player_ball_" + key[0].split("_")[2]].append(key)
+                elif key[0] == "fireBoost_001.png":
+                    sprites_dict["fireBoost_001.png"].append(key)
                 else:
                     # robtop made it so that some robots' glows can be found in both gamesheet02 and gamesheetglow for whatever reason
                     # so this is a thing to eliminate the extra glows
@@ -64,6 +66,18 @@ def convert(dir, files, suffix):
                     if test:
                         sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]].append(key)
 
+        # separating robot's fire boost
+        fire_w = int(float(re.search("(?<=,{)(.*)(?=}})", sprites_dict["fireBoost_001.png"][0][1]["textureRect"]).group(1).split(',')[0]))
+        fire_h = int(float(re.search("(?<=,{)(.*)(?=}})", sprites_dict["fireBoost_001.png"][0][1]["textureRect"]).group(1).split(',')[1]))
+        fireb_sheet = Image.new("RGBA", (fire_w, fire_h), (0, 0, 0, 0))
+        fire_left = int(float(re.search("(?<={{)(.*)(?=},)", sprites_dict["fireBoost_001.png"][0][1]["textureRect"]).group(1).split(',')[0]))
+        fire_upper = int(float(re.search("(?<={{)(.*)(?=},)", sprites_dict["fireBoost_001.png"][0][1]["textureRect"]).group(1).split(',')[1]))
+        if sprites_dict["fireBoost_001.png"][0][1]["textureRotated"]:
+            fire_w, fire_h = fire_h, fire_w
+
+        fire_sprite = gs02_image.crop((fire_left, fire_upper, fire_left + fire_w, fire_upper + fire_h))
+        fireb_sheet.paste(fire_sprite, (0,0))
+        fireb_sheet.save(join(dir, "output", "fireBoost_001" + suffix + ".png"))
 
         # honestly idek how to describe this
         # just read it 

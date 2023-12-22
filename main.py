@@ -10,6 +10,7 @@ from os.path import join, isfile, isdir, splitext, abspath
 def convert(dir, files, suffix):
     start_time = time.time()
     try:
+        # Makes 2 folders: $dir/output and $dir/output/icons
         try:
             os.mkdir(join(dir, "output"))
         except:
@@ -19,6 +20,7 @@ def convert(dir, files, suffix):
             os.mkdir(join(dir, "output", "icons"))
         except:
             pass
+
 
         with open(join(dir, f"GJ_GameSheet02{suffix}.plist"), 'rb') as f:
             gs02_data = plistlib.load(f) 
@@ -34,17 +36,20 @@ def convert(dir, files, suffix):
 
         for key in gs02_frames:
             if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')):
+                # Check if the sprite is of an icon to add in sprites_list
                 if key[0].startswith('player_ball_'):
                     sprites_list.append(["player_ball_" + key[0].split("_")[2], []])
                 else:
                     sprites_list.append([key[0].split("_")[0] + "_" + key[0].split("_")[1], []])
 
+        # ??? what does this do
         res = []
         [res.append(x) for x in sprites_list if x not in res]
         sprites_list = res
 
         sprites_dict = {sub[0]: sub[1] for sub in sprites_list}
 
+        # God I have no idea what's happening here
         for key in gs02_frames + gsgl_frames:
             if key[0].startswith(('bird_', 'dart_', 'player_', 'robot_', 'ship_', 'spider_')):
                 if key[0].startswith('player_ball_'):
@@ -60,6 +65,8 @@ def convert(dir, files, suffix):
                         sprites_dict[key[0].split("_")[0] + "_" + key[0].split("_")[1]].append(key)
 
 
+        # honestly idek how to describe this
+        # just read it 
         for icon in sprites_dict:
             w = 0
             h = 0
@@ -98,6 +105,7 @@ def convert(dir, files, suffix):
                 x += right - left + 1
                 icon_frames[key[0]] = key[1]
                 
+            # plist metadata
             plist_data = {
                 "frames": icon_frames, 
                 "metadata": {
@@ -111,6 +119,7 @@ def convert(dir, files, suffix):
                 }
             }
 
+            # write the plist and png
             f = open(join(dir, "output", "icons", f"{splitext(icon)[0]}{suffix}.plist"), 'wb')
             plistlib.dump(plist_data, f)
             sheet.save(join(dir, "output", "icons", f"{splitext(icon)[0]}{suffix}.png"))
@@ -127,15 +136,19 @@ def main():
         pack = abspath(input("Enter your 2.1 pack path: "))
         files_list = [f for f in os.listdir(pack) if isfile(join(pack, f))]
     except:
+        # If the input is incorrect,
+        # prints the erroe message and ask for input again
         print("Wrong/Invalid pack path!")
         print(traceback.format_exc())
         print()
         main()
+        return "balls"
 
     files_low = []
     files_medium = []
     files_high = []
 
+    # Separating between graphic types
     for f in files_list:
         if splitext(f)[0] in ['GJ_GameSheet02', 'GJ_GameSheetGlow'] and splitext(f)[1] in ['.plist', '.png']:
             files_low.append(f) 
@@ -144,6 +157,7 @@ def main():
         elif splitext(f)[0] in ['GJ_GameSheet02-uhd', 'GJ_GameSheetGlow-uhd'] and splitext(f)[1] in ['.plist', '.png']:
             files_high.append(f)
 
+    # Start converting 
     if len(files_low) == 4:
         print(f'Ready to convert {files_low} to 2.2.')
         convert(pack, files_low, "")
@@ -156,6 +170,7 @@ def main():
         print(f'Ready to convert {files_high} to 2.2.')
         convert(pack, files_high, "-uhd")
 
+    
     print(f"Converted textures are saved in {join(pack, 'output')}!")
     input("Press Enter to close the window.")
 

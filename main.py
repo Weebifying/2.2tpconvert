@@ -170,8 +170,11 @@ def main():
         print(f'Ready to convert {files_high} to 2.2.')
         convert(pack, files_high, "-uhd")
 
+    if len(files_low + files_medium + files_high) == 0:
+        print(f'No files found!')
+    else:
+        print(f"Converted textures are saved in {join(pack, 'output')}!")
     
-    print(f"Converted textures are saved in {join(pack, 'output')}!")
     input("Press Enter to close the window.")
 
 

@@ -6,13 +6,13 @@ For now only icons texture packs are supported!!!
 ~~IT WORKS INGAME!!!~~ ~~it does NOT work properly~~ IT DOES
 
 # Usage
+Use the exe in [release](https://github.com/Weebifying/2.2tpconvert/releases/latest), or run this in your terminal of choice:
 ```sh
 git clone https://github.com/Weebifying/2.2tpconvert.git
 cd 2.2tpconvert
 pip install -r requirements.txt
 python main.py
 ```
-Or use the exe in [release](https://github.com/Weebifying/2.2tpconvert/releases/latest)
 
 You need to have both GameSheet02 and GameSheetGlow pngs and plists in your input folder
 

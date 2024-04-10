@@ -14,7 +14,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-You need to have both GameSheet02 and GameSheetGlow pngs and plists in your input folder
+## You need to have both `GameSheet02` and `GameSheetGlow` pngs and plists in your input folder
 
 # Report problems:
 If you find any problem please submit an [issue](https://github.com/Weebifying/2.2tpconverter/issues) or open a [pull request](https://github.com/Weebifying/2.2tpconverter/pulls) for the problem

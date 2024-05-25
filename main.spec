@@ -1,8 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 
-
 block_cipher = None
-
 
 a = Analysis(
     ['main.py'],
@@ -19,6 +17,7 @@ a = Analysis(
     cipher=block_cipher,
     noarchive=False,
 )
+
 pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 exe = EXE(
@@ -28,7 +27,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='2.2tpconverter',
+    name='2.2-tpconverter',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -40,6 +39,5 @@ exe = EXE(
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
-    entitlements_file=None,
-    icon="./icon.ico"
+    entitlements_file=None
 )

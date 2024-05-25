@@ -172,7 +172,7 @@ def main():
     else:
         print(f"Converted textures are saved in {join(pack, 'output')}!")
     
-    input("Press Enter to close the window.")
+    input("Press enter to exit.")
 
 if __name__ == "__main__":
     main()

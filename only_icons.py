@@ -7,6 +7,8 @@ import time
 from PIL import Image
 from os.path import join, isfile, splitext, abspath, isdir
 
+Image.MAX_IMAGE_PIXELS = None
+
 def convert(dir, files, suffix):
     start_time = time.time()
     try:
